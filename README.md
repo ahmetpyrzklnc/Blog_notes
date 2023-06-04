@@ -1,9 +1,265 @@
-# lectureNotes
-my lecture notes
+# DERS NOTLARI
+
+Merhabalar.👋
+
+Ben Ahmet, yazılım öğrencisiyim. Kendi ders notlarımı bu repo altında biriktirerek hem kendime rahat bir okuma alanı hem de yazılıma merak duyan insanlar için bir türkçe kaynak oluşturdum. Bu kaynakta öğrendiğim bütün dilleri ve frameworkleri sürekli olarak güncelleyeceğim. Siz de güncel olarak bu repoda bulabileceksiniz.
+
+### İçindekiler
+- [DERS NOTLARI](#ders-notlari)
+    - [İçindekiler](#i̇çindekiler)
+- [JAVA Database](#java-database)
+    - [VERİTABANI BAĞLANTISI](#veri̇tabani-bağlantisi)
+    - [Form Ekranı](#form-ekranı)
+- [Bootstrap](#bootstrap)
+    - [***Container Yapısı***](#container-yapısı)
+    - [GRID veya IZGARA YAPISI](#grid-veya-izgara-yapisi)
+    - [GRID SİSTEMİ](#grid-si̇stemi̇)
+    - [ROW BLOKLARI](#row-bloklari)
+    - [Bootstrap - Renk Paletleri](#bootstrap---renk-paletleri)
+    - [Bootstrap - Tipografi Yapısı](#bootstrap---tipografi-yapısı)
+    - [Bootsrap - Margin ve Padding](#bootsrap---margin-ve-padding)
+    - [Display özellikleri](#display-özellikleri)
+    - [Offset Nedir](#offset-nedir)
+    - [Order - Sıralama Nedir?](#order---sıralama-nedir)
+- [**Bootstrap Bileşenlerine(UI Components) Genel Bakış**](#bootstrap-bileşenlerineui-components-genel-bakış)
+  - [**Accordion**](#accordion)
+  - [**Alerts**](#alerts)
+  - [**Badge**](#badge)
+  - [**Bredcrumb**](#bredcrumb)
+  - [**Buttons**](#buttons)
+  - [**Button group**](#button-group)
+  - [**Cards**](#cards)
+  - [**Carousel**](#carousel)
+  - [**Close button**](#close-button)
+  - [**Collapse**](#collapse)
+  - [**Dropdowns**](#dropdowns)
+  - [**Navbar**](#navbar)
+  - [**Pagination**](#pagination)
+  - [**Popovers**](#popovers)
+  - [**Progress**](#progress)
+  - [**Spinners**](#spinners)
+  - [**Toasts**](#toasts)
+  - [**Tooltips**](#tooltips)
+
+# JAVA Database
+
+### VERİTABANI BAĞLANTISI
+
+```java
+import java.sql.*;
+
+public class DBHelper {
+
+    static Stringurl= "veritabanı uzantısı.";
+
+    static Connectionconnection= null;
+
+    static void baglan(){
+        try {
+connection= DriverManager.getConnection(url, "postgres", "1234");
+            System.out.println("Bağlantı Başarıyla Gerçekleşti");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+```
+
+Burada birinci bölümde gerekli olan veritabanı bilgileri alınır. Connection methodu Java’da tanımlı olan bir methodtur.  Sonrasında bağlanmak için bir bağlan methodu oluşturularak burada hangi veri tabanına bağlanılacağı yazılır ve konsoldan bilgilendirme yapılır. SQL Exception JAVA’nın varsayılan güvenlik şemasıdır.
+
+```java
+static ResultSet listele(String sorgu){
+   Statement statement;
+     try {
+        statement =connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(sorgu);
+        return resultSet;
+     }catch (SQLException exception) {
+          throw new RuntimeException(exception);
+     }
+ }
+```
+
+Listele Methodu’nda aşağıda gönderilen sorgu gönderilmesi için parametreli oluşturulmuştur. Statement bir bağlantı gibi düşünebiliriz. Sorgu dolayısıyla her veri çekildiğinde burada alınır ve resultSet kısmına aktarılarak gerekli olan yerlerde veritabanından gelen veri gösterilir. SORGU (executeUpdate) olarak alınır.
+
+```java
+    static void ekle(String sorgu){
+        Statement st;
+        try {
+            st =connection.createStatement();
+            st.executeUpdate(sorgu);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+```
+
+Ekleme methodu, bir string sorgusu parametre alarak yine aynı işlemleri bir araya getirir. SORGU (executeUpdate) olarak alındığı unutulmamalıdır.
+
+```java
+static void guncelle(String sorgu){
+    Statement st;
+    try {
+        st =connection.createStatement();
+        st.executeUpdate(sorgu);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+Güncelle methodu da veritabanında var olan bir bilgiyi istenilen şekilde değiştirerek güncellemek için vardır. yine aynı şekilde SORGU (executeUpdate) olarak alındığı unutulmamalıdır.
+
+```java
+static void sil(String sorgu){
+    Statement st;
+    try {
+        st =connection.createStatement();
+        st.execute(sorgu);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+Sil methodu da veritabanında var olan bir bilgiyi geri dönüşümsüz silmeye olanak sağlar. SORGU (execute) olarak alındığı unutulmamalıdır.
+
+```java
+static void olustur(String sorgu){
+    Statement st;
+    try {
+        st =connection.createStatement();
+        st.execute(sorgu);
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+Oluştur methodu, veritabanına yeni bir tablo oluşturmaya olanak sağlar. SORGU (execute) olarak alındığı unutulmamalıdır.
+
+### Form Ekranı
+
+```java
+DefaultTableModel model = new DefaultTableModel();
+    Object[] kolonlar = {"Numara", "Ad", "Soyad", "Telefon"};
+    Object[] satirlar = new Object[4];
+
+    form1(){
+        add(panel);
+        setSize(400,400);
+        setTitle("CRUD");
+        DBHelper.baglan();
+        String sorgu = "select * from ogrenci";
+        ResultSet resultSet = DBHelper.listele(sorgu);
+
+        model.setColumnCount(0);
+        model.setRowCount(0);
+
+        model.setColumnIdentifiers(kolonlar);
+
+        try {
+            while (resultSet.next()){
+                satirlar[0] = resultSet.getString("ogrenciNo");
+                satirlar[1] = resultSet.getString("ogrenciAd");
+                satirlar[2] = resultSet.getString("ogrenciSoyad");
+                satirlar[3] = resultSet.getString("tel");
+                model.addRow(satirlar);
+            }
+            table1.setModel(model);
+        }catch (SQLException exception) {
+
+        }
+
+```
+
+DefaultTableModel java’nın dinamik tablo yapısına veri işlemleri yapılabilmesi için kullanılması gereken bir yapıdır. Bu yapıda tablo bir nevi dizin boyutuna getirilir ve ona göre işlemler eklenebilir. Aynı şekilde bir tabloda işlem yapılabilmesi içi öncelikle bir tablo kolon isimlendirmesi yapılırken kaç tane kolon veri girileceği de girilmesi gerekir.
+
+```java
+table1.addMouseListener(new MouseAdapter() {
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+        int s = table1.getSelectedRow();
+        JTextField.setText(table1.getValueAt(s,0).toString()); // tabloda seçilen satırı direkt textfield içine doldurur.
+        JTextField.setText(table1.getValueAt(s,1).toString());
+        JTextField.setText(table1.getValueAt(s,2).toString());
+        JTextField.setText(table1.getValueAt(s,3).toString());
+    }
+});
+```
+
+Burada ise bir tablo MouseListener seçilerek mouse ile tablo üzerinden seçim yapılarak tablonun içinden seçilen verinin texfield’lara aktarılması amaçlanır.
+
+```java
+EKLEButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String sorgu = "insert into ogrenci(ogrencino,ad,soyad,tel)" +
+                "values('"+textField1.getText()+"','"+textField2.getText()+"','"+textField3.getText()+"','"+textField4.getText()+"')";
+        veritabani.ekle(sorgu);
+    }
+});
+```
+
+Yukarıda anlatılan insert methodu üzerinde burada ise SQL Sorgusu yazılarak sonrasında texfield’ların içine girilmiş veriler veritabanına gönderilmek üzere yola çıkar. Burada unutulmaması gereken şey ise `INSERT INTO() VALUES();`bir veritabanı sorgusudur.
+
+```java
+GÜNCELLEButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String sorgu = "update ogrenci " +
+                "set ogrencino='"+textField1.getText()+"', ad='"+textField2.getText()+"', soyad='"+textField3.getText()+"', tel='"+textField4.getText()+"' " +
+                "where ogrencino='"+textField1.getText()+"'";
+        veritabani.guncelle(sorgu);
+    }
+});
+```
+
+Yukarıda alınan update methodunun devamı niteliğindedir. Sorgu değişkeninde sorgu alınarak girilen texfieldlar alınarak güncellenir ve yukarıdaki methodu parametreli çağırarak gönderir ve işlemler gerçekleşmiş olur.
+
+```java
+SİLButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String sorgu = "delete from ogrenci where ogrencino='"+textField1.getText()+"'";
+        veritabani.sil(sorgu);
+    }
+});
+```
+
+Sil butonuna görevlendirilme yapılan bu method, delete sorgusu yazılarak tablodan seçilmiş olan veriyi siler.
+
+```java
+TABLOOLUŞTURButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String sorgu = "CREATE TABLE IF NOT EXISTS stoklar(id varchar(10) NOT NULL," +
+                "urunadi varchar(20), urunadedi integer, urunturu varchar(10)," +
+                "CONSTRAINT stoklar_pkey PRIMARY KEY (id))";
+        System.out.println(sorgu);
+        veritabani.olustur(sorgu);
+    }
+});
+```
+
+Genellikle bir kere çalışan bu tablo oluşturma kısmı, veritabanında daha önce aynı isimde olmayan tabloyu oluşturur. Ama eğer ki bu isim önceden varsa veya aynı isimdeyse tablo oluşturulamaz hata alınır. Burada sorgu üzerinden gidelim:
+
+```java
+String sorgu = "CREATE TABLE IF NOT EXISTS stoklar(id varchar(10) NOT NULL," +
+        "urunadi varchar(20), urunadedi integer, urunturu varchar(10)," +
+        "CONSTRAINT stoklar_pkey PRIMARY KEY (id))";
+```
+
+Burada tablo oluşturulması için sorgu oluşturuldu. `IF NOT EXISTS` burada önceden aynı isimde varsa tabloyu OLUŞTURMA! anlamına gelir. Mevzu bahis veritabanında eğer ki ‘stoklar’ adı altında tablo varsa o veritabanında bu tablo oluşturulamaz. Ama eğer ki olmadığını varsayarsak, burada öncelikle bir id oluşturularak `NOT NULL` yani boş bırakılamaz anlamına gelen bir yapı kullanılmış sonrasında diğer kolonlarda sırasıyla girilmiştir. Son olarak diğer bir önemli alan olan ise `CONSTRAINT` ise bir primary key belirlemek için kullanılır. Primary key tablolardaki benzersiz tek veriler ve aynı zamanda anahtar kelimelerdir. Burada ‘id’ primary key olarak belirlenmiştir.
+
+Sorgular her veritabanında aynı şekilde olmamakla birlikte JAVA her veritabanında aynı şekilde kullanılır.
+
+-------------
 
 # Bootstrap
 
-### ***CONTAİNER YAPISI***
+### ***Container Yapısı***
 
 Container kelime anlamıyla tutucu anlamına gelir. Bir web sitesinde belirli resimleri veya butonları bir alan açarak içine yerleştirerek sayfanın sağından ve solundan boşluk bırakarak yazmamıza olanak sağlar. 
 
@@ -994,4 +1250,3 @@ Elementlerin üzerinde geldiğinizde size ipucu veren component'ler.
 ```
 
 Bu yazımızda Bootstrap'in tüm arayüz bileşenlerinden bahsetmeye çalıştık. Daha çok bu bileşenlerin tanıtımı gibi oldu. Bunlardan birine ihtiyacınız var ise Bootstrap'in [kendi dökümantasyonuna](https://getbootstrap.com/docs/4.6/getting-started/introduction/) gidip bu component'leri kendi projelerinize nasıl dahil edeceğinize bakabilirsiniz.
-
