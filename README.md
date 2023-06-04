@@ -633,7 +633,7 @@ Web sayfalarımızı tasarlarken sütunlarda `col` sınıfına sahip div element
 
 Yukarıda verilen kodun çıktısı:
 
-![img1.jpg](Bootstrap%20cb5c146e18d34620a0e3db2c3599a709/img1.jpg)
+![img1.jpg](images/img1.jpg)
 
 Yukarıdaki örnekte offset için sağdan ve soldan toplam iki birim ayrıldı. Eğer ki sütunun boyutu 8 birim olarak ayarlansaydı offset için verilebilecek en uygun değer 2 birim olurdu. (Yani 2 birim baştan boşluk 8 birim sütun boyutu ve 2 birimde sondan boşluk olacak şekilde toplam 12)
 
@@ -649,7 +649,7 @@ Yukarıdaki örnekte offset için sağdan ve soldan toplam iki birim ayrıldı. 
 
 Yukarıda verilen kodun çıktısı:
 
-![img2.jpg](Bootstrap%20cb5c146e18d34620a0e3db2c3599a709/img2.jpg)
+![img2.jpg](images/img2.jpg)
 
 Yukarıdaki örnekte sütun genişliği 8 birim, offset değeri ise sağdan 4 birim ve soldan 4 birim olarak verilmiştir. Fakat verilen değerler toplamı Grid yapısının alabileceği maksimum değerden fazla olduğu için offset ile sütuna yalnızca sol taraftan bir itme uygulanmıştır. Bunun yanı sıra offset için eğer 4'ten fazla bir değer girilseydi de sağ taraftan yapı dışına bir taşma söz konusu olacaktı.
 
