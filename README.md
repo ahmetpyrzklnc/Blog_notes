@@ -2,7 +2,7 @@
 
 Merhabalar.👋
 
-Ben Ahmet, yazılım öğrencisiyim. Kendi ders notlarımı bu repo altında biriktirerek hem kendime rahat bir okuma alanı hem de yazılıma merak duyan insanlar için bir türkçe kaynak oluşturdum. Bu kaynakta öğrendiğim bütün dilleri ve frameworkleri sürekli olarak güncelleyeceğim. Siz de güncel olarak bu repoda bulabileceksiniz.
+Ben Ahmet, yazılım öğrencisiyim. İlgilendiğim alanla ilgili teknik blog yazılarımı bu repo altında biriktirerek hem kendime rahat bir okuma alanı hem de yazılıma merak duyan insanlar için bir türkçe kaynak oluşturdum. Bu kaynakta öğrendiğim bütün dilleri ve frameworkleri sürekli olarak güncelleyeceğim. Siz de güncel olarak bu repoda bulabileceksiniz.
 
 ### İçindekiler
 - [DERS NOTLARI](#ders-notlari)
