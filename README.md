@@ -1,4 +1,4 @@
-# DERS NOTLARI
+# BLOG YAZILARI
 
 Merhabalar.👋
 
